@@ -1,0 +1,74 @@
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
+
+class ClientFormScreen extends StatefulWidget {
+  @override
+  _ClientFormScreenState createState() => _ClientFormScreenState();
+}
+
+class _ClientFormScreenState extends State<ClientFormScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final _clientNameController = TextEditingController();
+  final _familyNameController = TextEditingController();
+  final _staffCodeController = TextEditingController();
+
+  void submitClient() async {
+    if (_formKey.currentState!.validate()) {
+      // Google Sheets API call placeholder
+      String clientName = _clientNameController.text;
+      String familyName = _familyNameController.text;
+      String staffCode = _staffCodeController.text;
+
+      // Example: call API or Firebase here
+      Fluttertoast.showToast(msg: 'Client Added: $clientName');
+
+      // Clear form
+      _clientNameController.clear();
+      _familyNameController.clear();
+      _staffCodeController.clear();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Add Client')),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                controller: _clientNameController,
+                decoration: InputDecoration(labelText: 'Patient Name'),
+                validator: (value) {
+                  if (value!.isEmpty) return 'Enter name';
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _familyNameController,
+                decoration: InputDecoration(labelText: 'Family Name'),
+                validator: (value) {
+                  if (value!.isEmpty) return 'Enter family name';
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _staffCodeController,
+                decoration: InputDecoration(labelText: 'Staff Code'),
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: submitClient,
+                child: Text('Submit'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
